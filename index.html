@@ -197,25 +197,39 @@
 </div>
 
 <script>
-    const tg = window.Telegram?.WebApp;
+        const tg = window.Telegram?.WebApp;
+
+    // ссылки
+    const SUPPORT_URL = "https://t.me/trusty_help";
 
     function openBotChat() {
         if (tg) {
-            // Закрываем миниап и даём пользователю продолжить в чате с ботом
-            tg.close();
+            tg.close(); // просто закрываем миниап и продолжаем в чате с ботом
         }
     }
 
+    // Обмен и Узнать курс — в чат к операторам (Livegram дальше всё разрулит)
     document.getElementById('btn-exchange').onclick = openBotChat;
     document.getElementById('btn-rate').onclick = openBotChat;
-    document.getElementById('btn-support').onclick = openBotChat;
 
+    // Поддержка — отдельный аккаунт суппорта
+    document.getElementById('btn-support').onclick = function () {
+        if (tg && tg.openTelegramLink) {
+            tg.openTelegramLink(SUPPORT_URL);
+        } else {
+            window.location.href = SUPPORT_URL;
+        }
+    };
+
+    // Условия обмена — аккуратный текст
     document.getElementById('btn-terms').onclick = function () {
         alert(
             'Условия обмена:\n\n' +
-            '• Курс и детали — в чате с оператором\n' +
-            '• Минимальная сумма и комиссии уточняйте у оператора\n' +
-            '• Время проведения обмена зависит от загруженности сети и банка'
+            '• Работаем c 10:00 до 22:00 мск. Вне этого времени обработка заявки может занять больше времени.\n' +
+            '• Минимальной суммы нет. При обмене до 200 $ комиссия 3 $.\n' +
+            '• При крупных суммах возможна разбивка перевода на несколько частей и запрос дополнительного подтверждения: чек/скрин перевода, подтверждение из банка и т.п.\n' +
+            '• Пожалуйста, внимательно выполняйте инструкции оператора. Несоблюдение требований безопасности может привести к потере средств.\n' +
+            '• Возможна выдача по QR в любом городе РФ, а также сделки с наличными в офисе (город уточняйте у оператора).'
         );
     };
 
@@ -223,6 +237,7 @@
         tg.expand();
         tg.ready();
     }
+
 </script>
 </body>
 </html>
